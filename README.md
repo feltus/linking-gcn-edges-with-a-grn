@@ -106,7 +106,8 @@ For example, here are undirected edges specific for normal uterus and uterine ca
 ```
 https://gsajournals.figshare.com/ndownloader/files/31186971
 ```
-You will to manually parse out the undirected GCN edge list using Excel for the tissue of interest from Supplemental Table 1. Save as a tab-delimeted file (e.g. gcn.tab).
+
+You will to manually parse out the undirected GCN edge list using Excel for the tissue of interest from Supplemental Table 1. Save as a tab-delimeted file (e.g. gcn.tab). Add 'GeneA GeneB' column headers.
 
 # Step C. Make a merged GRN and GCN edge list with bash.
 
