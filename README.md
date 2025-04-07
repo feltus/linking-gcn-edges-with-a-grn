@@ -19,15 +19,80 @@ Visualize the network in Cytoscape.
 Install sqlite3 database software.
 ```
 
-
 # Step A. Download that GRN files.
 
-Example GRNs can be found in Sonawane, A. R. et al. Understanding Tissue-Specific Gene Regulation Article Understanding Tissue-Specific Gene Regulation (2017). This file maps the GRN genes with target genes for various human tissues.  Obtain this file using this command:
+Example gene regulatory networks (GRNs) can be found in Sonawane, A. R. et al. Understanding Tissue-Specific Gene Regulation Article Understanding Tissue-Specific Gene Regulation (2017). This comma-separated value (CSV) file maps the GRN genes with target genes for various human tissues.  Obtain this file using this command from this site: 
+
 ```
-wget https://www.cell.com/cms/10.1016/j.celrep.2017.10.001/attachment/e7309c03-e579-4119-a95e-376ab2066cbb/mmc2.csv
+https://www.cell.com/cms/10.1016/j.celrep.2017.10.001/attachment/e7309c03-e579-4119-a95e-376ab2066cbb/mmc2.csv
 ```
 
-# Step B. Download that GCN files.
+The GRNs in this file are specific for these tissues:
+
+```
+Adipose_visceral
+Adrenal_gland
+Artery_aorta
+Artery_coronary
+Artery_tibial
+Brain_basal_ganglia
+Brain_cerebellum
+Brain_other
+Breast
+Colon_sigmoid
+Colon_transverse
+Esophagus_mucosa
+Esophagus_muscularis
+Fibroblast_cell_line
+Gastroesophageal_junction
+Heart_atrial_appendage
+Heart_left_ventricle
+Intestine_terminal_ileum
+Kidney_cortex
+Liver
+Lung
+Lymphoblastoid_cell_line
+Minor_salivary_gland
+Ovary
+Pancreas
+Pituitary
+Prostate
+Skeletal_muscle
+Skin
+Spleen
+Stomach
+Testis
+Thyroid
+Tibial_nerve
+Tissues
+Uterus
+Vagina
+Whole_blood
+```
+
+The directed egges in these files can be found in the first and seconds columns with the tissue in the 5th column.   Note that the Transcription Factor column (TF) is an official gene symbol ID and the Transcriptional Target (TargetGene) column is an ENSEMBL ID, so you may need to translate these identifiers.  A database solution can be found below.
+
+```
+"TF","TargetGene","prior","Multiplicity","Tissues"
+"AHR","ENSG00000000003","0","1","Colon_transverse,"
+"ARID2","ENSG00000000003","0","2","Pituitary,Testis,"
+"ARID3A","ENSG00000000003","1","0","none"
+"ARNT","ENSG00000000003","0","1","Colon_transverse,"
+"ARNTL","ENSG00000000003","0","1","Colon_transverse,"
+"ATF1","ENSG00000000003","0","1","Testis,"
+"ATF2","ENSG00000000003","0","1","Testis,"
+"ATF7","ENSG00000000003","0","1","Testis,"
+"ATOH8","ENSG00000000003","0","1","Colon_transverse,"
+```
+
+Use bash to reduce this file to the tissue-specific GRN and save to a file (e.g. grn.csv).
+
+```
+cat mmc2.csv | grep 'Uterus' > grn.csv
+```
+ 
+
+# Step B. Build the GCN file.
 
 Gene co-expression networks (GCN) can be found in numerous publications and databases.  Here are some examples:  
 
@@ -37,11 +102,12 @@ Gene co-expression networks (GCN) can be found in numerous publications and data
 
 Download the GCN which is an undirected graph of GeneA---GeneB interactions. 
 
-For example, here is the supplemental data file for Uterus and Uterine cancer.
+For example, here are undirected edges specific for normal uterus and uterine cancer (UCEC, UCS).  
 
 ```
-wget https://gsajournals.figshare.com/ndownloader/files/31186971
+https://gsajournals.figshare.com/ndownloader/files/31186971
 ```
+You will to manually parse out the undirected GCN edge list using Excel for the tissue of interest from Supplemental Table 1. Save as a tab-delimeted file (e.g. gcn.tab).
 
 # Step C. Make a merged GRN and GCN edge list with bash.
 
@@ -51,24 +117,21 @@ Make a GRN and GCN edge files with the GRN and GCN edge labels.  Remember the GR
 
 #Make GRN Edge File
 ```
-cat GRN-REMAPPED.txt | awk '{print $1,$2}' > temp
+cat grn.tab | awk '{print $1,$2}' > temp
 awk '{print "GRN " $0}' temp   > GRN_edges.tab
 ```
-
-#Make GCN Edge File
 ```
-cat merged-gtex-kirp-kich-kirp-gem.log2.quantile.coexpnet.txt| awk '{print $1,$2}' > temp
-awk '{print "GCN " $0}' temp   > GCN_edges.tab
+cat gcn.tab | awk '{print $1,$2}' > temp
+awk '{print "GRN " $0}' temp   > GRN_edges.tab
 ```
-
 #Concatenate the files
 ```
-cat GRN_edges.tab GCN_edges.tab > merged.kidney.gcn.grn.tab
+cat GRN_edges.tab GCN_edges.tab > merged.tissueX.gcn.grn.tab
 ```
 
-#remove duplicate lines (edges)
+#Remove duplicate lines (edges)
 ```
-cat merged.kidney.gcn.grn.tab | uniq | sed 's/\s/\t/g' > merged.kidney.gcn.grn.unique.tab
+cat merged.kidney.gcn.grn.tab | uniq | sed 's/\s/\t/g' > merged.tissueX.gcn.grn.unique.tab
 ```
 
 # Step D. Make a merged GRN and GCN edge list with bash.
@@ -78,9 +141,9 @@ Transfer the file to your local computer and load the network into Cytoscape.  S
 
 When you are done, upload your merged Cytoscape file in to the class Googe Drive Folder.
 
-###########################Translate geneIDs with sqlite########################
+###########################Translate Gene Identifiers using Biomart Mapping Tables and sqlite########################
 
-If the GRN contains gene target names as ENSEMBL IDs (e.g. ENSG00000278025= NCR1), so we will want to change them to their corresponding official gene symbols.  To do this, we will need a gene identifier mapping table form Ensembl following these steps:
+If the GRN contains gene target names as ENSEMBL IDs (e.g. ENSG00000278025 >>> NCR1), so we will want to change them to their corresponding official gene symbols.  To do this, we will need a gene identifier mapping table form Ensembl following these steps:
 
 # Step A. Obtain a geneID mapping table.
 
@@ -100,17 +163,17 @@ Gene name
 # Step D. Prepare the files for database loading.
 
 ```
-cat mmc2.csv | sed 's/\"//g' | sed 's/,/\t/4;s/,/\t/3;s/,/\t/1;s/,/\t/1' > grn.tab
+cat grn.csv | sed 's/\"//g' | sed 's/,/\t/4;s/,/\t/3;s/,/\t/1;s/,/\t/1' > grn.tab
 #Change space delimiters to tabs in GCN file
-cat merged-gtex-kirp-kich-kirp-gem.log2.quantile.coexpnet.txt | sed 's/\s/\t/g' > gcn.tab
+cat coexpression-network-file | sed 's/\s/\t/g' > gcn.tab
 Build a database of the GRN, GCN, and names tables.
 ```
 
-# Step E: Install sqllite database software
+# Step E: Install sqlite database software
 
 You are probably familiar with spreadsheets like Excel.  Excel facilitates analysis of row x column data. However, when you want to find relationships between Excel spreadsheets, one need to write custom code or identify relationships in a relational database management system (rdbms).  We will use the command line friendly sqlite3 database software to identify relationships in our data.  You can find excellent help in these sqlite resources:  https://sqlite.org/cli.html and https://www.sqlitetutorial.net/.
 
-Install sqllite3 in your Ubunti VM using these commands:
+Install sqlite3 in Linux computer using these commands:
 
 ```
 PROMPT: How do i install sqllite on a shared linux cluster?
