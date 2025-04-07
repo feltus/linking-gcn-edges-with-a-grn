@@ -11,12 +11,11 @@ In this lab, we will link the genes in a human GCN with a tissue specific human 
 
 # Objectives
 ```
-Install sqlite3 database software.
 Obtain and preprocess a GRN and GCN file.
-Load the relevant tables into a sqlite3 database.
-Perform SQL SELECT queries to build a preprocessed merged directional GRN and unidirectional GCN network.
 Visualize the network in Cytoscape.
 Install sqlite3 database software.
+Load the relevant tables into a sqlite3 database.
+Perform SQL SELECT queries to build a preprocessed merged directional GRN and unidirectional GCN network.
 ```
 
 # Step A. Download that GRN files.
