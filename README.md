@@ -31,7 +31,13 @@ PROMPT: How do i install sqllite on a shared linux cluster?
 wget https://www.cell.com/cms/10.1016/j.celrep.2017.10.001/attachment/e7309c03-e579-4119-a95e-376ab2066cbb/mmc2.csv
 ```
 
-# Step B. The GRN contain gene target names as ENSEMBL IDs (e.g. ENSG00000278025= NCR1), so we will want to change them to their corresponding official gene symbols.  To do this, we will need a gene identifier mapping table form Ensembl following these steps:
+# Step B. Download that GCN files from Hickmann A et al Identification of condition-specific biomarker systems in uterine cancer (2021).
+
+```
+wget https://gsajournals.figshare.com/ndownloader/files/31186971
+```
+
+# Step C. The GRN contain gene target names as ENSEMBL IDs (e.g. ENSG00000278025= NCR1), so we will want to change them to their corresponding official gene symbols.  To do this, we will need a gene identifier mapping table form Ensembl following these steps:
 
 Go to https://www.ensembl.org/
 
@@ -45,11 +51,6 @@ Gene stable ID version
 Transcript stable ID
 Transcript stable ID version
 Gene name
-```
-# Step C. Download that GCN files from Hickmann A et al Identification of condition-specific biomarker systems in uterine cancer (2021).
-
-```
-wget https://gsajournals.figshare.com/ndownloader/files/31340002
 ```
 
 # Step D. Prepare the files for database loading.
