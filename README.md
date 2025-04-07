@@ -140,17 +140,17 @@ Transfer the file to your local computer and load the network into Cytoscape.  S
 
 When you are done, upload your merged Cytoscape file in to the class Googe Drive Folder.
 
-###########################Translate Gene Identifiers using Biomart Mapping Tables and sqlite########################
+# (Optional) Translate Gene Identifiers using Biomart Mapping Tables and an sqlite database
 
 If the GRN contains gene target names as ENSEMBL IDs (e.g. ENSG00000278025 >>> NCR1), so we will want to change them to their corresponding official gene symbols.  To do this, we will need a gene identifier mapping table form Ensembl following these steps:
 
 # Step A. Obtain a geneID mapping table.
 
 Go to https://www.ensembl.org/
+Select Biomart
+Select human genes
 
-Go to Biomart
-
-Select these attributes and save as a CSV file.  It will likely save as mart_export.csv
+Select these attributes and save as a CSV file.  It will likely save as mart_export.txt
 ```
 Gene stable ID
 Gene stable ID version
@@ -162,11 +162,10 @@ Gene name
 # Step D. Prepare the files for database loading.
 
 ```
-cat grn.csv | sed 's/\"//g' | sed 's/,/\t/4;s/,/\t/3;s/,/\t/1;s/,/\t/1' > grn.tab
-#Change space delimiters to tabs in GCN file
-cat coexpression-network-file | sed 's/\s/\t/g' > gcn.tab
-Build a database of the GRN, GCN, and names tables.
+cat grn.csv | sed 's/\"//g' | sed 's/,/\t/4;s/,/\t/3;s/,/\t/1;s/,/\t/1' > grn.tab #Convert to tab-delimited format
 ```
+
+Make sure your gcn file is tab-delimited.
 
 # Step E: Install sqlite database software
 
