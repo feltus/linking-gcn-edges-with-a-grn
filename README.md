@@ -173,6 +173,7 @@ In this step we will perform SELECT..FROM, INNER JOIN, and WHERE SQL statements 
 
 ```
 .separator "\t"
+.headers on
 .output GRN-REMAPPED.tsv
 SELECT TF, names."Gene Name", Tissues, TargetGene
 FROM grn
@@ -189,27 +190,33 @@ Make a GRN and GCN edge files with the GRN and GCN edge labels.  Remember the GR
 #Make GRN Edge File
 ```
 cat GRN-REMAPPED.tsv| awk '{print $1,$2}' > temp
-awk '{print "GRN " $0}' temp   > GRN_edges.tab
+awk '{print "GRN " $0}' temp   > temp2
+sed '1s/GRN/NetworkType/g' temp2  > temp3
+sed '1s/"Gene/GeneTarget/g' temp3  > GRN_edges.tab
+rm temp temp2 temp3
+
 ```
 ```
 cat gcn.tab | awk '{print $1,$2}' > temp
-awk '{print "GCN " $0}' temp   > GCN_edges.tab
+awk '{print "GCN " $0}' temp   > temp2
+sed '1s/GCN/NetworkType/g' temp2  > GCN_edges.tab
+rm temp temp2
 ```
 #Concatenate the files
 ```
-cat GRN_edges.tab GCN_edges.tab > merged.tissueX.gcn.grn.tab
+(head -n 1 GRN_edges.tab; tail -n +2 GRN_edges.tab; tail -n +2 GCN_edges.tab) > merged.gcn.grn.tab
 ```
 
 #Remove duplicate lines (edges)
 ```
-cat merged.tissueX.gcn.grn.tab | uniq | sed 's/\s/\t/g' > merged.tissueX.gcn.grn.unique.tab
+cat merged.gcn.grn.tab | uniq | sed 's/\s/\t/g' > unique.merged.gcn.grn.tab
 ```
 
 # Step D. Make a merged GRN and GCN edge list with bash.
 Make a Cytoscape network of Merged GCN and GRN. 
 
-Transfer the file to your local computer and load the network into Cytoscape.  See if you can display GRN edges as directed in Cytoscape. 
+Transfer the file to your local computer and load the network into Cytoscape (https://cytoscape.org/).  See if you can display GRN edges as directed while keeping GCN edges undirected in Cytoscape! 
 
-When you are done, upload your merged Cytoscape file in to the class Googe Drive Folder.
+When you are done, upload your merged Cytoscape file in to the class Google Drive Folder.
 
 
