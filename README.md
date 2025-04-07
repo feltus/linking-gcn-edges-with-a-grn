@@ -204,7 +204,7 @@ rm temp temp2
 ```
 #Concatenate the files
 ```
-(head -n 1 GRN_edges.tab; tail -n +2 GRN_edges.tab; tail -n +2 GCN_edges.tab) > merged.gcn.grn.tab
+(tail -n +2 GRN_edges.tab; tail -n +2 GRN_edges.tab; tail -n +2 GCN_edges.tab) > merged.gcn.grn.tab
 ```
 
 #Remove duplicate lines (edges)
