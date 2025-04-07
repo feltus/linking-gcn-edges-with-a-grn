@@ -87,7 +87,7 @@ The directed egges in these files can be found in the first and seconds columns 
 Use bash to reduce this file to the tissue-specific GRN and save to a file (e.g. grn.csv).
 
 ```
-head -n 1 mmc2.csv; grep 'Uterus' mmc2.csv) > grn.csv
+(head -n 1 mmc2.csv; grep 'Uterus' mmc2.csv) > grn.csv
 ```
  
 
