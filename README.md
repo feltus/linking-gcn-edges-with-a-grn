@@ -20,12 +20,24 @@ Install sqlite3 database software.
 ```
 
 
-# Step A. Download that GRN files from Sonawane, A. R. et al. Understanding Tissue-Specific Gene Regulation Article Understanding Tissue-Specific Gene Regulation (2017). This file maps the GRN genes with target genes for various human tissues.  Obtain this file using this command:
+# Step A. Download that GRN files.
+
+Example GRNs can be found in Sonawane, A. R. et al. Understanding Tissue-Specific Gene Regulation Article Understanding Tissue-Specific Gene Regulation (2017). This file maps the GRN genes with target genes for various human tissues.  Obtain this file using this command:
 ```
 wget https://www.cell.com/cms/10.1016/j.celrep.2017.10.001/attachment/e7309c03-e579-4119-a95e-376ab2066cbb/mmc2.csv
 ```
 
-# Step B. Download that GCN files from Hickmann A et al Identification of condition-specific biomarker systems in uterine cancer (2021).
+# Step B. Download that GCN files.
+
+Gene co-expression networks (GCN) can be found in numerous publications and databases.  Here are some examples:  
+
+(Uterus) Hickmann A et al "Identification of condition-specific biomarker systems in uterine cancer." (2021); https://academic.oup.com/g3journal/article/12/1/jkab392/6427626
+(Lung) Hang et al. "Identification of condition-specific regulatory mechanisms in normal and cancerous human lung tissue. (2022); https://link.springer.com/article/10.1186/s12864-022-08591-9
+(Brain) Hang et al. "Exploration into biomarker potential of region-specific brain gene co-expression networks." (2020); https://www.nature.com/articles/s41598-020-73611-1
+
+Download the GCN which is an undirected graph of GeneA---GeneB interactions. 
+
+For example, here is the supplemental data file for Uterus and Uterine cancer.
 
 ```
 wget https://gsajournals.figshare.com/ndownloader/files/31186971
