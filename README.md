@@ -130,7 +130,7 @@ cat GRN_edges.tab GCN_edges.tab > merged.tissueX.gcn.grn.tab
 
 #Remove duplicate lines (edges)
 ```
-cat merged.kidney.gcn.grn.tab | uniq | sed 's/\s/\t/g' > merged.tissueX.gcn.grn.unique.tab
+cat merged.tissueX.gcn.grn.tab | uniq | sed 's/\s/\t/g' > merged.tissueX.gcn.grn.unique.tab
 ```
 
 # Step D. Make a merged GRN and GCN edge list with bash.
@@ -162,7 +162,7 @@ Gene name
 # Step D. Prepare the files for database loading.
 
 ```
-cat mmc.csv | sed 's/\"//g' | sed 's/,/\t/4;s/,/\t/3;s/,/\t/1;s/,/\t/1' > grn.tab #Convert to tab-delimited format
+cat mmc2.csv | sed 's/\"//g' | sed 's/,/\t/4;s/,/\t/3;s/,/\t/1;s/,/\t/1' > grn.tab #Convert to tab-delimited format
 ```
 
 Make sure your gcn file is tab-delimited.
