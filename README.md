@@ -87,7 +87,7 @@ The directed egges in these files can be found in the first and seconds columns 
 Use bash to reduce this file to the tissue-specific GRN and save to a file (e.g. grn.csv).
 
 ```
-cat mmc2.csv | grep 'Uterus' > grn.csv
+head -n 1 mmc2.csv; grep 'Uterus' mmc2.csv) > grn.csv
 ```
  
 
@@ -162,7 +162,7 @@ Gene name
 # Step D. Prepare the files for database loading.
 
 ```
-cat grn.csv | sed 's/\"//g' | sed 's/,/\t/4;s/,/\t/3;s/,/\t/1;s/,/\t/1' > grn.tab #Convert to tab-delimited format
+cat mmc.csv | sed 's/\"//g' | sed 's/,/\t/4;s/,/\t/3;s/,/\t/1;s/,/\t/1' > grn.tab #Convert to tab-delimited format
 ```
 
 Make sure your gcn file is tab-delimited.
@@ -174,7 +174,7 @@ You are probably familiar with spreadsheets like Excel.  Excel facilitates analy
 Install sqlite3 in Linux computer using these commands:
 
 ```
-PROMPT: How do i install sqllite on a shared linux cluster?
+PROMPT: What is sqlite? Please provide a simple overview of a database, tables, and joins.  Please also provide instructions to install sqlite on a shared linux cluster?
 ```
 
 # Step F. Start the sqlite3 shell and create the database called mapping.
@@ -208,6 +208,6 @@ In this step we will perform SELECT..FROM, INNER JOIN, and WHERE SQL statements 
 SELECT TF, names."Gene Name", Tissues, TargetGene
 FROM grn
 INNER JOIN names on names."Gene stable ID"=grn.TargetGene
-WHERE Tissues LIKE '%Kidney%';
+WHERE Tissues LIKE '%Uterus%'; #Change your target tissue here if necessary.
 ```
 
