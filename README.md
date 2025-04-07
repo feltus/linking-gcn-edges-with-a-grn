@@ -43,14 +43,52 @@ For example, here is the supplemental data file for Uterus and Uterine cancer.
 wget https://gsajournals.figshare.com/ndownloader/files/31186971
 ```
 
-# Step C. The GRN contain gene target names as ENSEMBL IDs (e.g. ENSG00000278025= NCR1), so we will want to change them to their corresponding official gene symbols.  To do this, we will need a gene identifier mapping table form Ensembl following these steps:
+# Step C. Make a merged GRN and GCN edge list with bash.
+
+Make a GRN and GCN edge files with the GRN and GCN edge labels.  Remember the GRN edges are directed (TF > target gene) edges while the GCN edges are undirected GeneA-GeneB).  Write the GRN and GCN edge lists and then merge them and remove duplicate edges.
+
+#Obtain the edge lists and add the GCN or GRN label to each line
+
+#Make GRN Edge File
+```
+cat GRN-REMAPPED.txt | awk '{print $1,$2}' > temp
+awk '{print "GRN " $0}' temp   > GRN_edges.tab
+```
+
+#Make GCN Edge File
+```
+cat merged-gtex-kirp-kich-kirp-gem.log2.quantile.coexpnet.txt| awk '{print $1,$2}' > temp
+awk '{print "GCN " $0}' temp   > GCN_edges.tab
+```
+
+#Concatenate the files
+```
+cat GRN_edges.tab GCN_edges.tab > merged.kidney.gcn.grn.tab
+```
+
+#remove duplicate lines (edges)
+```
+cat merged.kidney.gcn.grn.tab | uniq | sed 's/\s/\t/g' > merged.kidney.gcn.grn.unique.tab
+```
+
+# Step D. Make a merged GRN and GCN edge list with bash.
+Make a Cytoscape network of Merged GCN and GRN. 
+
+Transfer the file to your local computer and load the network into Cytoscape.  See if you can display GRN edges as directed in Cytoscape. 
+
+When you are done, upload your merged Cytoscape file in to the class Googe Drive Folder.
+
+###########################Translate geneIDs with sqlite########################
+
+If the GRN contains gene target names as ENSEMBL IDs (e.g. ENSG00000278025= NCR1), so we will want to change them to their corresponding official gene symbols.  To do this, we will need a gene identifier mapping table form Ensembl following these steps:
+
+# Step A. Obtain a geneID mapping table.
 
 Go to https://www.ensembl.org/
 
 Go to Biomart
 
 Select these attributes and save as a CSV file.  It will likely save as mart_export.csv
-
 ```
 Gene stable ID
 Gene stable ID version
@@ -61,10 +99,12 @@ Gene name
 
 # Step D. Prepare the files for database loading.
 
+```
 cat mmc2.csv | sed 's/\"//g' | sed 's/,/\t/4;s/,/\t/3;s/,/\t/1;s/,/\t/1' > grn.tab
 #Change space delimiters to tabs in GCN file
 cat merged-gtex-kirp-kich-kirp-gem.log2.quantile.coexpnet.txt | sed 's/\s/\t/g' > gcn.tab
 Build a database of the GRN, GCN, and names tables.
+```
 
 # Step E: Install sqllite database software
 
@@ -109,39 +149,4 @@ FROM grn
 INNER JOIN names on names."Gene stable ID"=grn.TargetGene
 WHERE Tissues LIKE '%Kidney%';
 ```
-
-# Step I. Make a merged GRN and GCN edge list with bash.
-
-Make a GRN and GCN edge files with the GRN and GCN edge labels.  Remember the GRN edges are directed (TF > target gene) edges while the GCN edges are undirected GeneA-GeneB).  Write the GRN and GCN edge lists and then merge them and remove duplicate edges.
-
-#Obtain the edge lists and add the GCN or GRN label to each line
-
-#Make GRN Edge File
-```
-cat GRN-REMAPPED.txt | awk '{print $1,$2}' > temp
-awk '{print "GRN " $0}' temp   > GRN_edges.tab
-```
-
-#Make GCN Edge File
-```
-cat merged-gtex-kirp-kich-kirp-gem.log2.quantile.coexpnet.txt| awk '{print $1,$2}' > temp
-awk '{print "GCN " $0}' temp   > GCN_edges.tab
-```
-
-#Concatenate the files
-```
-cat GRN_edges.tab GCN_edges.tab > merged.kidney.gcn.grn.tab
-
-#remove duplicate lines (edges)
-cat merged.kidney.gcn.grn.tab | uniq | sed 's/\s/\t/g' > merged.kidney.gcn.grn.unique.tab
-```
-
-# Step J. Make a merged GRN and GCN edge list with bash.
-Make a Cytoscape network of Merged GCN and GRN. 
-
-Transfer the file to your local computer and load the network into Cytoscape.  See if you can display GRN edges as directed in Cytoscape. 
-
-When you are done, upload your merged Cytoscape file in to the class Googe Drive Folder.
-
-
 
