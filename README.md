@@ -209,6 +209,6 @@ In this step we will perform SELECT..FROM, INNER JOIN, and WHERE SQL statements 
 SELECT TF, names."Gene Name", Tissues, TargetGene
 FROM grn
 INNER JOIN names on names."Gene stable ID"=grn.TargetGene
-WHERE Tissues LIKE '%Uterus%'; #Change your target tissue here if necessary.
+WHERE Tissues LIKE '%Uterus%'; 
 ```
 
