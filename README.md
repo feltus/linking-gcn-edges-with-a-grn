@@ -1,4 +1,4 @@
-# linking-gcn-edges-with-a-grn
+# Computational Practice: linking-gcn-edges-with-a-grn
 
 # Linking GCN Edges with a GRN.
 There are 78,724 known genes (19,433 protein coding) that encode 385,659 unique RNA transcripts (89,832 protein coding) (GENCODE v47; https://www.gencodegenes.org/human/stats_47.html).  Through RNAseq analysis, it is possible to measure the output of all these genes for a given sample using gene co-expression networks (GCNs). 
